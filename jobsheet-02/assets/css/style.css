@@ -1,0 +1,318 @@
+﻿/* ==========================================================================
+   SIMPUS-Mini - Stylesheet Utama (Jobsheet 2)
+   Topik: Box Model, Flexbox Navbar, CSS Grid, Table, Form, & Responsive Design
+   ========================================================================== */
+
+/* ===== 1. Reset & Base Style ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    color: #334155;
+    background-color: #f1f5f9;
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    color: #1e40af;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: #1d4ed8;
+    text-decoration: underline;
+}
+
+/* ===== 2. Header & Navigasi (Flexbox) ===== */
+header {
+    background-color: #1e40af;
+    color: #ffffff;
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    box-shadow: 0 2px 8px rgba(30, 64, 175, 0.15);
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+header nav a {
+    color: #e0e7ff;
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 0.45rem 0.9rem;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+header nav a:hover {
+    color: #ffffff;
+    background-color: rgba(255, 255, 255, 0.15);
+    text-decoration: none;
+}
+
+/* Menu Navigasi Aktif */
+header nav a.active {
+    color: #ffffff;
+    background-color: #1d4ed8;
+    font-weight: 600;
+}
+
+/* ===== 3. Main Layout & Section Cards ===== */
+main {
+    max-width: 1000px;
+    width: 100%;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    flex: 1; /* Membuat footer selalu di bawah */
+}
+
+section {
+    background-color: #ffffff;
+    border-radius: 10px;
+    padding: 1.75rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e2e8f0;
+}
+
+section h2 {
+    color: #1e40af;
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #e2e8f0;
+}
+
+section p {
+    color: #475569;
+}
+
+/* ===== 4. Kartu Statistik Beranda (CSS Grid) ===== */
+main section:nth-of-type(2) {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
+}
+
+main section:nth-of-type(2) article {
+    background: linear-gradient(145deg, #f8fafc, #edf2f7);
+    border: 1px solid #cbd5e1;
+    border-top: 4px solid #1e40af;
+    border-radius: 8px;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+main section:nth-of-type(2) article:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+main section:nth-of-type(2) article h3 {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+main section:nth-of-type(2) article p {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #1e40af;
+    line-height: 1.2;
+}
+
+/* ===== 5. Tabel Data ===== */
+.table-responsive {
+    overflow-x: auto;
+    margin-top: 0.5rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+thead {
+    background-color: #1e40af;
+    color: #ffffff;
+}
+
+thead th {
+    font-weight: 600;
+    letter-spacing: 0.3px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f8fafc;
+}
+
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Tombol Aksi dalam Tabel */
+td button {
+    padding: 0.4rem 0.8rem;
+    margin-right: 0.35rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: opacity 0.2s ease, transform 0.1s ease;
+}
+
+td button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+td button:first-of-type {
+    background-color: #f59e0b; /* Warna kuning Edit */
+    color: #ffffff;
+}
+
+td button:last-of-type {
+    background-color: #ef4444; /* Warna merah Hapus */
+    color: #ffffff;
+}
+
+/* Status Badge / Keterangan */
+.badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 9999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.badge-success {
+    background-color: #dcfce7;
+    color: #15803d;
+}
+
+.badge-danger {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+/* ===== 6. Form & Input ===== */
+form p {
+    margin-bottom: 1.25rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.4rem;
+    font-weight: 600;
+    color: #334155;
+    font-size: 0.95rem;
+}
+
+form input,
+form select {
+    width: 100%;
+    max-width: 450px;
+    padding: 0.65rem 0.85rem;
+    border: 1.5px solid #cbd5e1;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background-color: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+form input:focus,
+form select:focus {
+    outline: none;
+    border-color: #1e40af;
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.15);
+}
+
+form button[type="submit"] {
+    background-color: #1e40af;
+    color: #ffffff;
+    border: none;
+    padding: 0.7rem 1.8rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+form button[type="submit"]:hover {
+    background-color: #1d4ed8;
+    transform: translateY(-1px);
+}
+
+/* ===== 7. Footer ===== */
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: #64748b;
+    font-size: 0.9rem;
+    background-color: #ffffff;
+    border-top: 1px solid #e2e8f0;
+    margin-top: auto;
+}
+
+/* ===== 8. Responsive Design (Mobile / Tablet) ===== */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1rem;
+    }
+
+    header nav ul {
+        width: 100%;
+        gap: 0.25rem;
+    }
+
+    main {
+        margin: 1rem auto;
+        padding: 0 1rem;
+    }
+
+    main section:nth-of-type(2) {
+        grid-template-columns: 1fr; /* Kartu statistik jadi 1 kolom di HP */
+    }
+
+    form input,
+    form select {
+        max-width: 100%;
+    }
+}

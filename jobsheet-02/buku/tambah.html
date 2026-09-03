@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIMPUS-Mini | Tambah Buku</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>SIMPUS-Mini</h1>
+        <nav>
+            <ul>
+                <li><a href="../index.html">Beranda</a></li>
+                <li><a href="list.html">Daftar Buku</a></li>
+                <li><a href="tambah.html" class="active">Tambah Buku</a></li>
+                <li><a href="../anggota/list.html">Daftar Anggota</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>Form Tambah Buku Baru</h2>
+            <form action="list.html" method="get">
+                <p>
+                    <label for="judul">Judul Buku</label>
+                    <input type="text" id="judul" name="judul" placeholder="Contoh: Laskar Pelangi" required>
+                </p>
+                <p>
+                    <label for="pengarang">Pengarang / Penulis</label>
+                    <input type="text" id="pengarang" name="pengarang" placeholder="Contoh: Andrea Hirata" required>
+                </p>
+                <p>
+                    <label for="tahun">Tahun Terbit</label>
+                    <input type="number" id="tahun" name="tahun" min="1900" max="2026" placeholder="Contoh: 2005" required>
+                </p>
+                <p>
+                    <label for="isbn">Nomor ISBN</label>
+                    <input type="text" id="isbn" name="isbn" placeholder="Contoh: 978-979-3062-79-2">
+                </p>
+                <p>
+                    <label for="stok">Jumlah Stok</label>
+                    <input type="number" id="stok" name="stok" min="0" placeholder="Contoh: 5" required>
+                </p>
+                <p>
+                    <label for="kategori">Kategori Buku</label>
+                    <select id="kategori" name="kategori">
+                        <option value="fiksi">Fiksi</option>
+                        <option value="non-fiksi">Non-Fiksi</option>
+                        <option value="referensi">Referensi</option>
+                        <option value="teknologi">Teknologi</option>
+                    </select>
+                </p>
+                <p>
+                    <button type="submit">Simpan Data Buku</button>
+                </p>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 SIMPUS-Mini &mdash; Pemrograman Web</p>
+    </footer>
+</body>
+</html>
