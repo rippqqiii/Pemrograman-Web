@@ -1,16 +1,133 @@
-/* Override kecil di atas Bootstrap agar tetap konsisten dengan warna brand SIMPUS-Mini */
+/* ==========================================================================
+   SIMPUS-Mini - Stylesheet (Jobsheet 3 - Bootstrap)
+   Tema Gelap Teduh (Deep Slate / Anti-Silau)
+   ========================================================================== */
 
-.navbar-brand,
-.nav-link {
-    color: #fff !important;
+body {
+    background-color: #0f172a !important;
+    color: #cbd5e1 !important;
+    min-height: 100vh;
 }
 
-.nav-link:hover,
-.nav-link.active {
-    color: #d9e8f5 !important;
+/* Navbar */
+header.navbar {
+    background-color: #0f172a !important;
+    border-bottom: 1px solid #334155;
+}
+
+.navbar-brand {
+    color: #38bdf8 !important;
+    font-weight: 700;
+}
+
+.navbar-nav .nav-link {
+    color: #94a3b8 !important;
+    padding: 0.4rem 0.85rem !important;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* Hover: Highlight latar abu-abu gelap dengan teks putih terang */
+.navbar-nav .nav-link:hover {
+    color: #ffffff !important;
+    background-color: #334155 !important;
+    text-decoration: none !important;
+}
+
+/* Active: Highlight lembut cyan untuk menu aktif */
+.navbar-nav .nav-link.active {
+    color: #38bdf8 !important;
+    background-color: rgba(56, 189, 248, 0.12) !important;
+    font-weight: 600;
+}
+
+/* Cards & Containers */
+.card {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #cbd5e1 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25) !important;
+}
+
+.card-title {
+    color: #38bdf8 !important;
+}
+
+.card-text {
+    color: #cbd5e1 !important;
+}
+
+/* Stat Inset Boxes */
+.rounded-3 {
+    border: 1px solid #334155 !important;
+}
+
+/* Tables */
+.table {
+    --bs-table-bg: #1e293b !important;
+    --bs-table-striped-bg: #162032 !important;
+    --bs-table-hover-bg: #243247 !important;
+    --bs-table-color: #cbd5e1 !important;
+    --bs-table-border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+.table th,
+.table td {
+    border-color: #334155 !important;
+    color: #cbd5e1 !important;
+}
+
+.table thead,
+thead[style] {
+    background-color: #0f172a !important;
+}
+
+.table thead th {
+    color: #38bdf8 !important;
+    border-bottom: 2px solid #334155 !important;
+}
+
+/* Forms */
+.form-label {
+    color: #cbd5e1 !important;
+}
+
+.form-control,
+.form-select {
+    background-color: #0f172a !important;
+    border-color: #334155 !important;
+    color: #f1f5f9 !important;
+}
+
+.form-control:focus,
+.form-select:focus {
+    background-color: #0f172a !important;
+    border-color: #38bdf8 !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 0 0.25rem rgba(56, 189, 248, 0.25) !important;
+}
+
+.form-control::placeholder {
+    color: #64748b !important;
+}
+
+/* Buttons */
+form button[type="submit"],
+button[type="submit"] {
+    background-color: #0284c7 !important;
+    color: #ffffff !important;
+    border: none;
+    transition: background-color 0.2s ease;
 }
 
 form button[type="submit"]:hover,
 button[type="submit"]:hover {
-    background-color: #164869 !important;
+    background-color: #0369a1 !important;
+    color: #ffffff !important;
+}
+
+footer {
+    color: #64748b !important;
 }
