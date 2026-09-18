@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gramedia | Riwayat Penjualan</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header class="navbar navbar-expand-lg navbar-dark">
+        <div class="container">
+            <a class="navbar-brand fw-semibold" href="../index.html">Gramedia</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu" aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <nav class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="../index.html">Beranda</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Produk</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="../produk/list.html">Daftar Buku</a></li>
+                            <li><a class="dropdown-item" href="../produk/tambah.html">Tambah Buku</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Penjualan</a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item active" href="list.html">Riwayat Penjualan</a></li>
+                            <li><a class="dropdown-item" href="tambah.html">Buat Transaksi</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section>
+            <h2>Riwayat Penjualan</h2>
+            <div class="search-box">
+                <label for="search-input">Cari Transaksi</label>
+                <input type="text" id="search-input" placeholder="Ketik ID transaksi atau judul buku...">
+            </div>
+            <div id="loading-indicator" style="display:none;">
+                <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                Memuat data...
+            </div>
+            <div class="table-responsive">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Transaksi</th>
+                        <th>Tanggal</th>
+                        <th>Buku</th>
+                        <th>Jumlah</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Baris diisi dinamis oleh assets/js/penjualan.js via fetch('../data/penjualan.json') -->
+                </tbody>
+            </table>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Sistem Penjualan Buku &mdash; Ahmad Rifqi (254107060131)</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/app.js"></script>
+    <script src="../assets/js/penjualan.js"></script>
+</body>
+</html>
