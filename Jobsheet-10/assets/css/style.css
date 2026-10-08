@@ -1,0 +1,354 @@
+/* ===== Reset & Base ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    color: #e8d4d4;
+    background-color: #1a0a0a;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+a {
+    color: #c41e3a;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* ===== Header & Navbar (Flexbox) ===== */
+header {
+    background-color: #9e0303;
+    color: #e8d4d4;
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+header h1 {
+    font-size: 1.4rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    gap: 1.25rem;
+}
+
+header nav a {
+    color: #e8d4d4;
+    font-weight: 500;
+}
+
+/* ===== Main Layout ===== */
+main {
+    max-width: 1000px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+main > section:nth-of-type(2){
+    margin-top: 4.5rem;
+    margin-bottom: 1.5rem;
+}
+
+section {
+    background-color: #2d1515;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+section h2 {
+    margin-bottom: 1rem;
+    color: #c41e3a;
+}
+
+/* ===== Tabel ===== */
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.65rem 0.75rem;
+    border-bottom: 1px solid #5c1a1a;
+}
+
+thead {
+    background-color: #9e0303;
+    color: #ffffff;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #1a0a0a;
+}
+
+tbody tr:hover {
+    background-color: #5c1a1a;
+}
+
+td button {
+    padding: 0.35rem 0.7rem;
+    margin-right: 0.35rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+td button:first-of-type,
+td a.btn-edit {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    margin-right: 0.35rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    background-color: #d97706;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+td a.btn-edit:hover {
+    background-color: #b45309;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+td form.form-hapus {
+    display: inline;
+}
+
+td form.form-hapus button.btn-hapus {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    padding: 0.35rem 0.7rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+}
+
+td form.form-hapus button.btn-hapus:hover {
+    background-color: #bb2d3b;
+}
+
+/* ===== Pagination ===== */
+.pagination {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1.25rem;
+}
+
+.pagination a {
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #5c1a1a;
+    border-radius: 4px;
+    color: #e8d4d4;
+    background-color: #1a0a0a;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.pagination a:hover {
+    background-color: #5c1a1a;
+    color: #ffffff;
+}
+
+.pagination a.active {
+    background-color: #9e0303;
+    color: #ffffff;
+    border-color: #9e0303;
+}
+
+/* ===== Search Box ===== */
+.search-box {
+    margin-bottom: 1rem;
+}
+
+.search-box form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.search-box input {
+    width: 100%;
+    max-width: 320px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #5c1a1a;
+    border-radius: 4px;
+    background-color: #1a0a0a;
+    color: #e8d4d4;
+}
+
+.search-box button {
+    padding: 0.55rem 1.2rem;
+    border: none;
+    border-radius: 4px;
+    background-color: #9e0303;
+    color: #ffffff;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.search-box button:hover {
+    background-color: #5c1a1a;
+}
+
+/* ===== Form ===== */
+form p {
+    margin-bottom: 1rem;
+}
+
+form label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 600;
+    color: #e8d4d4;
+}
+
+form input,
+form select {
+    width: 100%;
+    max-width: 400px;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid #5c1a1a;
+    border-radius: 4px;
+    font-size: 1rem;
+    background-color: #1a0a0a;
+    color: #e8d4d4;
+}
+
+form button[type="submit"] {
+    background-color: #9e0303;
+    color: #ffffff;
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+form button[type="submit"]:hover {
+    background-color: #5c1a1a;
+}
+
+/* ===== Footer ===== */
+footer {
+    text-align: center;
+    padding: 1.25rem;
+    color: #e8d4d4;
+    font-size: 0.9rem;
+}
+
+/* ===== Tabel Responsif ===== */
+.table-responsive {
+    overflow-x: auto;
+}
+
+/* ===== Hamburger Menu (JS-driven) ===== */
+.nav-toggle-label {
+    display: none;
+    font-size: 1.6rem;
+    color: #e8d4d4;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+/* ===== Flash Message ===== */
+.flash {
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+}
+
+.flash-success {
+    background-color: #134e4a;
+    color: #99f6e4;
+    border: 1px solid #0d9488;
+}
+
+.flash-error {
+    background-color: #4c0519;
+    color: #fecdd3;
+    border: 1px solid #be123c;
+}
+
+/* ===== Pesan Error Validasi ===== */
+.error {
+    display: block;
+    color: #f87171;
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* ===== Responsive Breakpoints ===== */
+
+/* Tablet ke bawah */
+@media (max-width: 768px) {
+    main section:nth-of-type(2) {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    header {
+        position: relative;
+    }
+
+    .nav-toggle-label {
+        display: block;
+    }
+
+    header nav {
+        display: none;
+        width: 100%;
+        order: 3;
+        margin-top: 1rem;
+    }
+
+    header nav.nav-open {
+        display: block;
+    }
+
+    header nav ul {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    main section:nth-of-type(2) {
+        grid-template-columns: 1fr;
+    }
+
+    form input,
+    form select {
+        max-width: 100%;
+    }
+
+    .search-box form {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
