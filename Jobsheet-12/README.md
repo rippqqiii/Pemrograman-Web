@@ -1,102 +1,120 @@
-# Jobsheet 12 — Integrasi Modul Pindah Saldo & Concurrency Control
+# TabunganKu — Jobsheet 12: Integrasi Sistem & Manajemen Transaksi Konkuren
 
-**Mata Kuliah:** Desain dan Pemrograman Web (Semester 3)  
-**Studi Kasus:** TabunganKu  
-**Sub-CPMK:** Mengintegrasikan front-end dan back-end proyek secara utuh serta menerapkan transaksi database atomik (*concurrency control*).
+Aplikasi web pengelolaan target tabungan pribadi dan pencatatan mutasi keuangan berbasis **PHP**, **PostgreSQL (PDO)**, dan **Bootstrap 5**.
 
----
-
-## 1. Perubahan dari Jobsheet 11
-
-Pada Jobsheet 12 ini, seluruh komponen yang dibangun dari Jobsheet 8 hingga Jobsheet 11 diintegrasikan secara utuh ke dalam alur bisnis aplikasi:
-
-1. **Skema & Dokumentasi Transaksi (`sql/03_pindah_saldo.sql`)**:
-   - Skrip verifikasi tabel `target` dan `transaksi`.
-   - Dokumentasi alur transaksi multi-tabel di PostgreSQL.
-
-2. **Modul Pindah Saldo Antar Target (`pindah_saldo/`)**:
-   - `pindah_saldo/tambah.php`: Form memilih Target Asal (hanya target dengan `saldo_sekarang > 0`), Target Tujuan (validasi tidak boleh sama dengan asal), nominal, dan catatan.
-   - `pindah_saldo/proses_tambah.php`:
-     - Menjalankan **transaksi atomik** (`$pdo->beginTransaction()`, `$pdo->commit()`, `$pdo->rollBack()`).
-     - Menerapkan **pessimistic locking** (`SELECT ... FOR UPDATE`) pada kedua target yang terlibat agar saldo tidak dimodifikasi oleh proses lain selama transaksi berlangsung (*race condition prevention*).
-     - Mengurutkan ID baris sebelum dikunci (`min(id1, id2)` & `max(id1, id2)`) untuk mencegah *deadlock*.
-     - Mengurangi saldo target asal, menambah saldo target tujuan, dan mencatat 2 mutasi ke tabel `transaksi` dalam satu kesatuan kerja atomik.
-
-3. **Modul Riwayat Transaksi per Target (`transaksi/riwayat.php`)**:
-   - Memfilter seluruh histori arus kas khusus untuk target tabungan tertentu (analog dengan fitur riwayat peminjaman per anggota di modul acuan).
-   - Menampilkan kartu ringkasan target: Saldo saat ini, Target nominal, Progres pencapaian, Total disetor, dan Total ditarik.
-
-4. **Peningkatan Concurrency Control pada Transaksi Biasa (`transaksi/proses_tambah.php`)**:
-   - Pengecekan saldo dan pembaruan data setor/tarik kini berada **di dalam** `$pdo->beginTransaction()` dengan klausa `SELECT ... FOR UPDATE`.
-
-5. **Fitur Pembatalan Transaksi / Reversal Saldo (`transaksi/hapus.php`)**:
-   - Analog dengan fitur *Pengembalian Buku* pada modul perpustakaan: membatalkan transaksi mutasi dan mengembalikan/mereversal saldo target secara atomik dengan locking `FOR UPDATE`.
-
-6. **Integrasi Autentikasi & Navigasi (`includes/header.php`)**:
-   - Navbar menampilkan status login (`$_SESSION['nama']`) dan menu Logout.
-   - Menu pembuatan target, transaksi, dan pindah saldo diproteksi dengan `includes/auth.php`.
-
-7. **Integrasi Dashboard (`index.php`)**:
-   - Menampilkan metrik dinamis: Total Saldo Terkumpul, Total Target Dana, Sisa Kebutuhan, Target Tercapai, dan Total Transaksi.
-   - Menampilkan tabel ringkasan 5 transaksi mutasi terbaru.
+Pada tahap **Jobsheet 12**, aplikasi telah melalui proses integrasi menyeluruh (*end-to-end*) antara antarmuka pengguna, sistem autentikasi, serta pengelolaan transaksi database yang aman dari *race condition* melalui mekanisme *pessimistic concurrency control*.
 
 ---
 
-## 2. Cara Menjalankan
+## 🎯 Gambaran Umum Proyek
 
-### Persiapan Database PostgreSQL
-Pastikan database `gramedia` (atau database proyek Anda) aktif di PostgreSQL / Laragon:
+**TabunganKu** membantu pengguna menetapkan tujuan keuangan (target tabungan), memantau persentase capaian secara *real-time*, mencatat setiap setoran maupun penarikan dana, serta melakukan pemindahan alokasi dana (*transfer saldo*) antar-target tabungan dengan aman.
+
+---
+
+## ✨ Fitur & Peningkatan pada Jobsheet 12
+
+### 1. Modul Pindah Saldo Antar-Target (`pindah_saldo/`)
+Memungkinkan pengguna mengalihkan sebagian atau seluruh dana dari satu target impian ke target impian lainnya secara langsung tanpa perlu melakukan proses tarik-setor manual.
+* **Filter Sumber Dana:** Dropdown target asal otomatis menyaring hanya target yang memiliki saldo aktif (`> Rp 0`).
+* **Validasi Relasi:** Mencegah pemindahan dana ke target yang sama dan memastikan nominal transfer tidak melampaui saldo yang tersedia.
+
+### 2. Transaksi Database Atomik & Concurrency Control
+Mengamankan seluruh mutasi finansial menggunakan standar **ACID (Atomicity, Consistency, Isolation, Durability)**:
+* **Pessimistic Locking (`SELECT ... FOR UPDATE`):** Baris data target dikunci di tingkat database saat pengecekan saldo, mencegah terjadinya *race condition* atau saldo bernilai negatif ketika ada akses bersamaan.
+* **Deadlock Prevention:** Pada transaksi yang melibatkan dua target (pindah saldo), penguncian baris diurutkan secara konsisten berdasarkan ID terkecil (`min/max`) sehingga tidak akan terjadi kebuntuan antar-proses.
+* **All-or-Nothing:** Menggunakan `$pdo->beginTransaction()`, `$pdo->commit()`, dan `$pdo->rollBack()` untuk menjamin integritas data bila terjadi gangguan koneksi atau kegagalan sistem.
+
+### 3. Filter Riwayat Mutasi per Target (`transaksi/riwayat.php`)
+Halaman analitik khusus yang menampilkan:
+* Ringkasan performa target terpilih (Saldo saat ini, Target dana, Progres bar capaian, Total dana masuk, Total dana keluar).
+* Tabel histori transaksi terperinci khusus untuk target yang sedang ditinjau.
+
+### 4. Pembatalan Transaksi & Reversal Saldo (`transaksi/hapus.php`)
+Fitur koreksi transaksi yang mengembalikan (*reversal*) saldo target ke kondisi sebelum transaksi terjadi secara aman dan terisolasi.
+
+### 5. Integrasi Autentikasi Pengguna & Navigasi Dinamis
+* Navbar otomatis mendeteksi status login sesi pengguna (`$_SESSION['nama']`).
+* Seluruh operasi mutasi saldo dan pembuatan target diproteksi oleh *guard clause* [`includes/auth.php`](includes/auth.php).
+
+### 6. Dashboard Ringkasan Finansial (`index.php`)
+Menampilkan metrik agregat langsung dari database:
+* Total Saldo Terkumpul, Total Target Dana, dan Sisa Kebutuhan Dana.
+* Indikator Target Selesai vs Target Dalam Proses.
+* Tabel 5 mutasi transaksi paling mutakhir.
+
+---
+
+## 🏗️ Struktur Berkas & Direktori
+
+```text
+Jobsheet-12/
+├── index.php                      # Dashboard utama & ringkasan statistik
+├── README.md                      # Dokumentasi teknis proyek
+├── assets/
+│   ├── css/style.css              # Kustomisasi tema & palet warna
+│   └── js/app.js                  # Interaktivitas front-end & validasi
+├── auth/
+│   ├── login.php                  # Halaman masuk sistem
+│   ├── register.php               # Halaman pendaftaran pengguna
+│   ├── proses_login.php           # Autentikasi & regenerasi session ID
+│   ├── proses_register.php        # Hashing password (bcrypt) & simpan akun
+│   └── logout.php                 # Terminasi sesi login
+├── includes/
+│   ├── auth.php                   # Pengecekan sesi login
+│   ├── csrf.php                   # Pembuatan & validasi token CSRF
+│   ├── footer.php                 # Penutup layout & pemanggilan pustaka JS
+│   ├── header.php                 # Header aplikasi & navigasi responsif
+│   ├── helpers.php                # Fungsi utilitas & sanitasi output
+│   └── koneksi.php                # Konfigurasi koneksi PDO PostgreSQL
+├── target/
+│   ├── list.php                   # Tinjauan semua target & progres capaian
+│   ├── tambah.php                 # Form pembuatan target baru
+│   ├── proses_tambah.php          # Validasi & penyimpanan target
+│   └── hapus.php                  # Penghapusan target bersaldo Rp 0
+├── transaksi/
+│   ├── list.php                   # Log seluruh transaksi dengan pencarian & paginasi
+│   ├── riwayat.php                # Filter histori transaksi spesifik per target
+│   ├── tambah.php                 # Formulir setor / tarik dana
+│   ├── proses_tambah.php          # Proses setor/tarik dengan baris terkunci
+│   └── hapus.php                  # Pembatalan transaksi & pemulihan saldo
+├── pindah_saldo/
+│   ├── tambah.php                 # Antarmuka pemindahan dana antar-target
+│   └── proses_tambah.php          # Eksekusi pindah saldo atomik multi-baris
+├── sql/
+│   ├── 01_target_transaksi.sql    # DDL pembuatan tabel target & transaksi
+│   ├── 02_users.sql               # DDL pembuatan tabel users autentikasi
+│   └── 03_pindah_saldo.sql        # Skrip audit & panduan verifikasi transaksi
+├── docs/wireframe.md              # Referensi rancangan antarmuka pengguna
+└── Dokumentasi/                   # Catatan arsitektur & panduan modul
+```
+
+---
+
+## 🚀 Panduan Menjalankan Aplikasi
+
+### 1. Konfigurasi Database
+Pastikan PostgreSQL berjalan (misalnya melalui Laragon atau instalasi PostgreSQL standalone), lalu inisialisasi skema basis data:
 ```bash
 psql -U postgres -d gramedia -f sql/01_target_transaksi.sql
 psql -U postgres -d gramedia -f sql/02_users.sql
 ```
 
-### Menjalankan Server Web
-**Opsi 1 — PHP Built-in Server**:
+### 2. Menjalankan Server Lokal
+Anda dapat menggunakan server bawaan PHP dari dalam direktori `Jobsheet-12`:
 ```bash
-# Jalankan terminal di dalam folder Jobsheet-12
 php -S localhost:8000
 ```
-Buka browser pada: `http://localhost:8000`
-
-**Opsi 2 — Laragon / Apache**:
-Akses melalui virtual host atau path Laragon Anda, contoh:
-`http://localhost/Pemrograman-Web/Jobsheet-12/`
+Buka peramban (*browser*) dan arahkan ke alamat:
+`http://localhost:8000`
 
 ---
 
-## 3. Skenario Pengujian End-to-End (Bahan Presentasi ke Dosen)
+## 🧪 Alur Simulasi & Demonstrasi Fitur
 
-Berikut alur pengujian lengkap untuk didemokan ke Dosen pengampu:
-
-1. **Registrasi & Login**:
-   - Buka menu Login &rarr; klik *Daftar di sini* &rarr; buat akun baru &rarr; login berhasil.
-   - Perhatikan navbar kini menampilkan nama pengguna dan menu transaksi lengkap.
-2. **Buat Target Tabungan**:
-   - Buat Target 1: "Tabungan Laptop" (Target: Rp 10.000.000, Saldo awal: Rp 0).
-   - Buat Target 2: "Dana Darurat" (Target: Rp 5.000.000, Saldo awal: Rp 0).
-3. **Setor Dana (Nabung)**:
-   - Masuk ke menu *Setor / Tarik* &rarr; pilih Target "Tabungan Laptop" &rarr; Setor Rp 500.000.
-   - Cek dashboard: Total saldo bertambah Rp 500.000 dan transaksi muncul di 5 transaksi terbaru.
-4. **Uji Fitur Pindah Saldo (Jobsheet 12)**:
-   - Masuk ke menu *Transaksi* &rarr; *🔄 Pindah Saldo Antar Target*.
-   - Pilih Target Asal: "Tabungan Laptop" (Saldo: Rp 500.000).
-   - Pilih Target Tujuan: "Dana Darurat".
-   - Masukkan nominal: Rp 200.000.
-   - Klik *Proses Pindah Saldo*.
-   - Periksa hasilnya: Saldo "Tabungan Laptop" menjadi Rp 300.000, dan saldo "Dana Darurat" menjadi Rp 200.000.
-   - Di riwayat transaksi tercatat mutasi penarikan dari target asal dan mutasi setoran ke target tujuan.
-5. **Cek Riwayat per Target**:
-   - Masuk ke menu *Riwayat per Target* &rarr; pilih "Tabungan Laptop" &rarr; lihat seluruh mutasi dana khusus untuk target tersebut.
-6. **Uji Pembatalan Transaksi (Reversal)**:
-   - Buka menu *Semua Transaksi* &rarr; klik tombol *Batal* pada salah satu transaksi &rarr; konfirmasi &rarr; saldo target otomatis disesuaikan kembali secara aman.
-7. **Logout**:
-   - Klik menu pengguna di kanan atas &rarr; Logout &rarr; sesi berakhir aman.
-
----
-
-## 4. Konsep Teori untuk Penjelasan ke Dosen
-
-> **Pertanyaan Dosen:** *"Bagaimana cara kamu mencegah race condition saat pemindahan saldo atau penarikan?"*  
-> **Jawaban:**  
-> *"Saya menggunakan **Pessimistic Concurrency Control** dengan klausa `SELECT ... FOR UPDATE` di dalam blok transaksi PDO (`beginTransaction`). Saat transaksi berjalan, baris data target dikunci di level baris oleh database PostgreSQL, sehingga proses lain tidak bisa membaca atau menulis saldo lama hingga transaksi pertama selesai (`commit` atau `rollBack`). Selain itu, ID target diurutkan (`min/max`) sebelum dikunci untuk menghindari potensi deadlock."*
+1. **Autentikasi Akun**: Masuk menggunakan akun terdaftar atau buat akun baru via menu *Registrasi Pengguna*.
+2. **Inisialisasi Target Tabungan**: Buat dua target berbeda (contoh: "Laptop Kerja" dan "Dana Cadangan").
+3. **Pencatatan Setoran**: Lakukan transaksi setor sejumlah Rp 1.000.000 pada target "Laptop Kerja". Amati pembaruan saldo di halaman utama.
+4. **Eksekusi Pindah Saldo**: Masuk ke menu *Transaksi* &rarr; *Pindah Saldo*, alihkan dana sebesar Rp 300.000 dari "Laptop Kerja" ke "Dana Cadangan". Verifikasi penyesuaian saldo kedua target secara seketika.
+5. **Pemeriksaan Mutasi per Target**: Buka menu *Riwayat per Target* untuk melihat rincian arus kas masuk dan keluar masing-masing pos tabungan.
+6. **Koreksi Transaksi (Reversal)**: Batalkan transaksi pada daftar transaksi utama dan konfirmasi bahwa saldo target kembali ke nilai semula secara akurat.
